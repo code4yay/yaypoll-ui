@@ -11,7 +11,7 @@ export type ResError = {
 /**
  * レスポンス型
  */
-export type Res<T> = {
+export type Res<T = void> = {
   response: T
   errors: ResError[]
 }
