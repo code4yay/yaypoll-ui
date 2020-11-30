@@ -13,6 +13,11 @@ export class ApiClient {
     this.axios = axios.create({ baseURL })
   }
 
+  /**
+   * `email` にトークンを送るAPIを叩きます
+   *
+   * @param email メールアドレス
+   */
   async requestLogInToken(email: string): Promise<void> {
     await this.axios.get('/requestLogInToken', {
       data: {
