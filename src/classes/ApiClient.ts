@@ -18,11 +18,9 @@ export class ApiClient {
    *
    * @param email メールアドレス
    */
-  async requestLogInToken(email: string): Promise<void> {
-    await this.axios.get('/requestLogInToken', {
-      data: {
-        email,
-      },
-    })
+  async requestLogInToken(email: string): Promise<Res> {
+    const res = await this.axios.get<Res>('/requestLogInToken?email=' + email)
+
+    return res.data
   }
 }
