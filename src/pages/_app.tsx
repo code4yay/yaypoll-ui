@@ -4,6 +4,7 @@ import { AppProps } from 'next/app'
 import { ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { mainTheme as theme } from '../themes/main'
+import { ApiProvider } from '../contexts/ApiContext'
 
 /**
  * MyApp component.
@@ -31,7 +32,9 @@ export default function MyApp(props: AppProps): React.ReactElement {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Component {...pageProps} />
+        <ApiProvider baseURL="https://dcj2020-contest-voting-system-server.vercel.app">
+          <Component {...pageProps} />
+        </ApiProvider>
       </ThemeProvider>
     </React.Fragment>
   )
