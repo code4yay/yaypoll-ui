@@ -5,6 +5,7 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { mainTheme as theme } from '../themes/main'
 import { ApiProvider } from '../contexts/ApiContext'
+import { SnackbarProvider } from 'notistack'
 
 /**
  * MyApp component.
@@ -32,9 +33,11 @@ export default function MyApp(props: AppProps): React.ReactElement {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <ApiProvider baseURL="https://dcj2020-contest-voting-system-server.vercel.app">
-          <Component {...pageProps} />
-        </ApiProvider>
+        <SnackbarProvider>
+          <ApiProvider baseURL="https://dcj2020-contest-voting-system-server.vercel.app">
+            <Component {...pageProps} />
+          </ApiProvider>
+        </SnackbarProvider>
       </ThemeProvider>
     </React.Fragment>
   )
