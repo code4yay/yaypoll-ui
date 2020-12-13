@@ -4,6 +4,8 @@ import { Res } from '../types/Res'
 export class ApiClient {
   private readonly axios: AxiosInstance
 
+  private token = ''
+
   /**
    * ApiClientのコンストラクタ
    *
@@ -17,7 +19,7 @@ export class ApiClient {
    * 現在ログインしているかどうかを返します
    */
   isLoggedIn(): boolean {
-    return !!this.axios.defaults.headers['Authorization']
+    return this.token !== ''
   }
 
   /**
@@ -38,7 +40,8 @@ export class ApiClient {
     })
 
     if (res.data.errors.length === 0) {
-      this.axios.defaults.headers['Authorization'] = res.data.response.jwt
+      this.token = res.data.response.jwt
+      console.log(this)
     }
 
     return res.data
