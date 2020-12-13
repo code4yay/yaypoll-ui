@@ -1,4 +1,4 @@
-import { createContext } from 'react'
+import { createContext, useState } from 'react'
 import { ApiClient } from '../classes/ApiClient'
 
 /**
@@ -27,7 +27,7 @@ export type ApiProviderProps = {
  */
 export const ApiProvider: React.FC<ApiProviderProps> = (props) => {
   const { baseURL } = props
-  const client = new ApiClient(baseURL)
+  const [client] = useState(new ApiClient(baseURL))
 
   return (
     <ApiContext.Provider value={{ client }}>
