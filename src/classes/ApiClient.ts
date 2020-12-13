@@ -57,4 +57,16 @@ export class ApiClient {
 
     return res.data
   }
+
+  async voteWork(id: string): Promise<Res> {
+    const res = await this.axios.post<Res>(
+      `/works/${id}/vote`,
+      {},
+      {
+        headers: { Authorization: this.token },
+      }
+    )
+
+    return res.data
+  }
 }
