@@ -18,9 +18,23 @@ export class ApiClient {
    *
    * @param email メールアドレス
    */
-  async requestLogInToken(email: string): Promise<Res> {
+  async requestLogInToken(email: string): Promise<boolean> {
     const res = await this.axios.get<Res>('/requestLogInToken?email=' + email)
 
-    return res.data
+    return res.data.errors.length === 0
+  }
+
+  async login(email: string, token: string): Promise<boolean> {
+    const res = await this.axios.post<Res<{ jwt: string }>>('/login', {
+      email,
+      token,
+    })
+
+    if (res.data.errors.length === 0) {
+      this.axios.defaults.headers['Authroization'] = res.data.response.jwt
+      return true
+    }
+
+    return false
   }
 }
