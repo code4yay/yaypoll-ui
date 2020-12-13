@@ -17,7 +17,7 @@ export class ApiClient {
    * 現在ログインしているかどうかを返します
    */
   isLoggedIn(): boolean {
-    return this.axios.defaults.headers['Authorization']
+    return !!this.axios.defaults.headers['Authorization']
   }
 
   /**
