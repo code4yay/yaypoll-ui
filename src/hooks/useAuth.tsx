@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { MainLayout } from '../layouts/MainLayout'
 import { useApi } from './useApi'
 
 /**
@@ -7,11 +8,10 @@ import { useApi } from './useApi'
  */
 export const useAuth = (): React.ReactElement | void => {
   if (!process.browser) {
-    return <></>
+    return <MainLayout></MainLayout>
   }
 
   const api = useApi()
-  console.log(api)
 
   if (api.isLoggedIn()) {
     return
@@ -23,5 +23,5 @@ export const useAuth = (): React.ReactElement | void => {
     router.push('/login')
   }, [])
 
-  return <></>
+  return <MainLayout></MainLayout>
 }
