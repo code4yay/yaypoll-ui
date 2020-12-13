@@ -83,4 +83,21 @@ export class ApiClient {
 
     return res.data
   }
+
+  /**
+   * ログインしているユーザーの投票権をリセットします（デバッグ用）。
+   *
+   * @deprecated
+   */
+  async unvote(): Promise<Res> {
+    const res = await this.axios.post<Res>(
+      `/unvoted`,
+      {},
+      {
+        headers: { Authorization: this.token },
+      }
+    )
+
+    return res.data
+  }
 }
