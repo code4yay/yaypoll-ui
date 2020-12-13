@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios'
 import { Res } from '../types/Res'
+import { Work } from '../types/Work'
 
 export class ApiClient {
   private readonly axios: AxiosInstance
@@ -43,6 +44,16 @@ export class ApiClient {
       this.token = res.data.response.jwt
       console.log(this)
     }
+
+    return res.data
+  }
+
+  async getWorks(): Promise<Res<{ works: Work[] }>> {
+    const res = await this.axios.get<Res<{ works: Work[] }>>('/works', {
+      headers: {
+        Authorization: this.token,
+      },
+    })
 
     return res.data
   }
