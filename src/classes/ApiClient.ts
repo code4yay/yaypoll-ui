@@ -18,13 +18,13 @@ export class ApiClient {
    *
    * @param email メールアドレス
    */
-  async requestLogInToken(email: string): Promise<boolean> {
+  async requestLogInToken(email: string): Promise<Res> {
     const res = await this.axios.get<Res>('/requestLogInToken?email=' + email)
 
-    return res.data.errors.length === 0
+    return res.data
   }
 
-  async login(email: string, token: string): Promise<boolean> {
+  async login(email: string, token: string): Promise<Res<{ jwt: string }>> {
     const res = await this.axios.post<Res<{ jwt: string }>>('/login', {
       email,
       token,
@@ -32,9 +32,8 @@ export class ApiClient {
 
     if (res.data.errors.length === 0) {
       this.axios.defaults.headers['Authroization'] = res.data.response.jwt
-      return true
     }
 
-    return false
+    return res.data
   }
 }
