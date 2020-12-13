@@ -14,6 +14,13 @@ export class ApiClient {
   }
 
   /**
+   * 現在ログインしているかどうかを返します
+   */
+  isLoggedIn(): boolean {
+    return this.axios.defaults.headers['Authorization']
+  }
+
+  /**
    * `email` にトークンを送るAPIを叩きます
    *
    * @param email メールアドレス
@@ -31,7 +38,7 @@ export class ApiClient {
     })
 
     if (res.data.errors.length === 0) {
-      this.axios.defaults.headers['Authroization'] = res.data.response.jwt
+      this.axios.defaults.headers['Authorization'] = res.data.response.jwt
     }
 
     return res.data
