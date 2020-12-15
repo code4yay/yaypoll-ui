@@ -11,14 +11,19 @@ import {
   TextField,
   Typography,
   LinearProgress,
+  Chip,
 } from '@material-ui/core'
 import { useState } from 'react'
 import { useApi } from '../hooks/useApi'
 import { useRouter } from 'next/dist/client/router'
+import { Alert } from '@material-ui/lab'
 
 const useStyles = makeStyles((theme) => ({
   card: {
     marginTop: theme.spacing(8),
+  },
+  alertSpacing: {
+    marginTop: theme.spacing(2),
   },
 }))
 
@@ -101,6 +106,11 @@ export const LoginPage: NextPage = () => {
           </Collapse>
           <Collapse in={page === 1}>
             <CardContent>
+              <Alert severity="info">
+                <Chip label={email} color="primary" />{' '}
+                宛にログインに必要なトークンを送信いたしました。
+              </Alert>
+              <div className={classes.alertSpacing}></div>
               <TextField
                 error={!!error}
                 helperText={error}
