@@ -43,7 +43,7 @@ export class ApiClient {
    * @param token トークン
    */
   async login(email: string, token: string): Promise<Res<{ jwt: string }>> {
-    const res = await this.axios.post<Res<{ jwt: string }>>('/usres/login', {
+    const res = await this.axios.post<Res<{ jwt: string }>>('/users/login', {
       email,
       token,
     })
