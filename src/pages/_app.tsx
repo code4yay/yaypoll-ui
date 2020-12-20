@@ -34,7 +34,7 @@ export default function MyApp(props: AppProps): React.ReactElement {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <SnackbarProvider>
-          <ApiProvider baseURL="https://dcj2020-contest-voting-system-server.vercel.app">
+          <ApiProvider baseURL="https://dcj2020-contest-voting-system.herokuapp.com/">
             <Component {...pageProps} />
           </ApiProvider>
         </SnackbarProvider>
