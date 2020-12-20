@@ -1,13 +1,11 @@
 import {
   CardHeader,
   Card,
-  CardContent,
   Button,
   Grid,
   Divider,
-  Avatar,
   CardActions,
-  makeStyles,
+  Typography,
 } from '@material-ui/core'
 import { NextPage } from 'next'
 import { useSnackbar } from 'notistack'
@@ -16,20 +14,10 @@ import { useApi } from '../hooks/useApi'
 import { useAuth } from '../hooks/useAuth'
 import { MainLayout } from '../layouts/MainLayout'
 import { Work } from '../types/Work'
-
-const useStyles = makeStyles({
-  votesAvatar: {
-    background: '#81C784',
-    color: 'white',
-  },
-})
-
 /**
  * HomePage component.
  */
 export const HomePage: NextPage = () => {
-  const classes = useStyles()
-
   const frag = useAuth()
   if (frag) {
     return frag
@@ -47,10 +35,6 @@ export const HomePage: NextPage = () => {
 
   useEffect(() => {
     updateWorks()
-
-    setInterval(() => {
-      updateWorks()
-    }, 1000)
   }, [])
 
   if (!works) {
@@ -99,14 +83,12 @@ export const HomePage: NextPage = () => {
             <Grid key={w.id} item xs={12} md={3} lg={4}>
               <Card>
                 <CardHeader
-                  avatar={
-                    <Avatar className={classes.votesAvatar}>{w.votes}</Avatar>
+                  title={
+                    <Typography variant="h5" component="h6">
+                      {w.title}
+                    </Typography>
                   }
-                  title={w.title}
-                  subheader="by 作者名@所属道場"
                 />
-                <Divider />
-                <CardContent>作品の説明やリンク、動画等</CardContent>
                 <Divider />
                 <CardActions>
                   <Button
@@ -116,7 +98,7 @@ export const HomePage: NextPage = () => {
                     disabled={loading}
                     onClick={() => vote(w)}
                   >
-                    投票する
+                    この作品に投票する
                   </Button>
                 </CardActions>
               </Card>
