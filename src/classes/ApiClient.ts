@@ -29,7 +29,9 @@ export class ApiClient {
    * @param email メールアドレス
    */
   async requestLogInToken(email: string): Promise<Res> {
-    const res = await this.axios.get<Res>('/requestLogInToken?email=' + email)
+    const res = await this.axios.get<Res>(
+      '/users/requestLogInToken?email=' + email
+    )
 
     return res.data
   }
@@ -41,7 +43,7 @@ export class ApiClient {
    * @param token トークン
    */
   async login(email: string, token: string): Promise<Res<{ jwt: string }>> {
-    const res = await this.axios.post<Res<{ jwt: string }>>('/login', {
+    const res = await this.axios.post<Res<{ jwt: string }>>('/usres/login', {
       email,
       token,
     })
