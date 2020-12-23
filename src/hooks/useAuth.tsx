@@ -6,7 +6,7 @@ import { useApi } from './useApi'
 /**
  * ログインしていない場合、空のノードを返し、ログインページに遷移します。
  */
-export const useAuth = (): React.ReactElement | void => {
+export const useAuth = (next?: string): React.ReactElement | void => {
   if (!process.browser) {
     return <MainLayout></MainLayout>
   }
@@ -20,7 +20,11 @@ export const useAuth = (): React.ReactElement | void => {
   const router = useRouter()
 
   useEffect(() => {
-    router.push('/login')
+    if (next) {
+      router.push(`/login?next=${next}`)
+    } else {
+      router.push('/login')
+    }
   }, [])
 
   return <MainLayout></MainLayout>
