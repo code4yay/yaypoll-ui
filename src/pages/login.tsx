@@ -61,7 +61,11 @@ export const LoginPage: NextPage = () => {
     setLoading(false)
 
     if (result.errors.length === 0) {
-      router.push('/')
+      if (typeof router.query.next === 'string') {
+        router.push(router.query.next)
+      } else {
+        router.push('/')
+      }
     } else {
       setError(result.errors[0].message)
     }
