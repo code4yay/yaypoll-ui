@@ -26,11 +26,15 @@ export const HomePage: NextPage = () => {
   const api = useApi()
   const { enqueueSnackbar } = useSnackbar()
   const [works, setWorks] = useState<Work[]>([])
+  const [votedWorks, setVotedWorks] = useState<Work[]>([])
   const [loading, setLoading] = useState(false)
 
   const updateWorks = async () => {
     const works = await api.getWorks().then((r) => r.response.works)
     setWorks(() => works)
+
+    const votedWorks = await api.votedWorks().then((r) => r.response.votedWorks)
+    setVotedWorks(() => votedWorks)
   }
 
   useEffect(() => {
@@ -54,29 +58,43 @@ export const HomePage: NextPage = () => {
       return
     }
 
-    updateWorks()
+    await updateWorks()
     setLoading(false)
     enqueueSnackbar(`「${work.title}」に投票しました！`, { variant: 'info' })
   }
 
+  const unvote = async (work: Work) => {
+    setLoading(true)
+    const res = await api.unvoteWork(work.id)
+
+    if (res.errors.length > 0) {
+      res.errors.forEach((e) =>
+        enqueueSnackbar(e.message, { variant: 'error' })
+      )
+
+      setLoading(false)
+      return
+    }
+
+    await updateWorks()
+    setLoading(false)
+    enqueueSnackbar(`「${work.title}」への投票をキャンセルしました`, {
+      variant: 'info',
+    })
+  }
+
+  const isVotedWork = (work: Work) => {
+    return !!votedWorks.find((w) => w.id === work.id)
+  }
+
   return (
     <MainLayout>
-      <h1>
+      <Typography variant="h3" component="h1">
         ファイナリストの作品
-        <Button
-          variant="text"
-          color="secondary"
-          onClick={() =>
-            api.unvote().then(() =>
-              enqueueSnackbar('投票権をリセットしました。', {
-                variant: 'info',
-              })
-            )
-          }
-        >
-          投票権をリセット（デバック用）
-        </Button>
-      </h1>
+      </Typography>
+      <Typography variant="h4" component="div">
+        投票できる数: {3 - votedWorks.length}
+      </Typography>
       <Grid container spacing={2} justify="center">
         {works.map((w) => {
           return (
@@ -91,15 +109,27 @@ export const HomePage: NextPage = () => {
                 />
                 <Divider />
                 <CardActions>
-                  <Button
-                    variant="text"
-                    color="primary"
-                    fullWidth
-                    disabled={loading}
-                    onClick={() => vote(w)}
-                  >
-                    この作品に投票する
-                  </Button>
+                  {isVotedWork(w) ? (
+                    <Button
+                      variant="text"
+                      color="secondary"
+                      fullWidth
+                      disabled={loading}
+                      onClick={() => unvote(w)}
+                    >
+                      投票をキャンセル
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="text"
+                      color="primary"
+                      fullWidth
+                      disabled={loading}
+                      onClick={() => vote(w)}
+                    >
+                      この作品に投票する
+                    </Button>
+                  )}
                 </CardActions>
               </Card>
             </Grid>
