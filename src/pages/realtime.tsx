@@ -1,6 +1,7 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
+import Hotkeys from 'react-hot-keys'
 import { Bar } from 'react-chartjs-2'
 import { useApi } from '../hooks/useApi'
 import { useAuth } from '../hooks/useAuth'
@@ -15,45 +16,41 @@ export const ScorePage: NextPage = () => {
     return frag
   }
 
-  const [data, setData] = useState({})
+  const [data, setData] = useState([])
+  const [labels, setLabels] = useState([])
+  const [maxVotes, setMaxVotes] = useState(0)
+  const [updateRate, setUpdateRate] = useState(1000)
+  const [mosaicVotes, setMosaicVotes] = useState(true)
+  const [displayTitle, setDisplayTitle] = useState(false)
+  const [show, setShow] = useState(true)
   const api = useApi()
+
+  const toggleDisplayTitle = () => setDisplayTitle(!displayTitle)
+
+  const toggleMosaicVotes = () => setMosaicVotes(!mosaicVotes)
+
+  const toggleUpdateRate = () =>
+    setUpdateRate(updateRate === 1000 ? 5000 : 1000)
+
+  const toggleShow = () => setShow(!show)
 
   const update = async () => {
     const res = await api.getWorks()
-    const votes = res.response.works.map(({ votes }) => votes).sort()
+    const works = res.response.works
 
-    setData({
-      labels: ['', '', '', '', '', ''],
-      datasets: [
-        {
-          label: '投票状況',
-          data: votes,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgb(255, 206, 86)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)',
-          ],
-          borderWidth: 1,
-        },
-      ],
-    })
+    const labels = works.map(({ title }) => title)
+    const votes = works.map(({ votes }) => votes)
+    const maxVotes = votes.reduce((c, v) => Math.max(c, v), -Infinity)
+
+    setMaxVotes(maxVotes)
+    setLabels(labels)
+    setData(votes)
+
+    setTimeout(update, updateRate)
   }
 
   useEffect(() => {
     update()
-
-    setInterval(update, 1000)
   }, [])
 
   if (!data) {
@@ -66,8 +63,54 @@ export const ScorePage: NextPage = () => {
         <title>投票状況 - DojoCon Japan 2020</title>
       </Head>
       <MainLayout>
-        <Bar data={data} />
+        {show ? (
+          <Bar
+            options={{
+              title: {
+                text: `DojoCon Japan 2020 プログラミングコンテスト ニンジャ部門`,
+                display: true,
+              },
+            }}
+            data={{
+              labels: displayTitle
+                ? mosaicVotes
+                  ? labels
+                  : labels.map((l, i) => l + `(${data[i]}票)`)
+                : labels.map(() => ''),
+              datasets: [
+                {
+                  label: '投票状況',
+                  data: mosaicVotes ? data.map((d) => d / maxVotes) : data,
+                  backgroundColor: displayTitle
+                    ? [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                      ]
+                    : [
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                      ],
+                  borderWidth: 1,
+                },
+              ],
+            }}
+          />
+        ) : (
+          <div></div>
+        )}
       </MainLayout>
+      <Hotkeys keyName="shift+t" onKeyDown={toggleDisplayTitle}></Hotkeys>
+      <Hotkeys keyName="shift+v" onKeyDown={toggleMosaicVotes}></Hotkeys>
+      <Hotkeys keyName="shift+u" onKeyDown={toggleUpdateRate}></Hotkeys>
+      <Hotkeys keyName="shift+s" onKeyDown={toggleShow}></Hotkeys>
     </>
   )
 }
