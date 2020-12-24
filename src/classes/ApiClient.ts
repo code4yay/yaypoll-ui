@@ -87,6 +87,23 @@ export class ApiClient {
   }
 
   /**
+   * 作品の票をキャンセルします。
+   *
+   * @param id 作品のid
+   */
+  async unvoteWork(id: string): Promise<Res> {
+    const res = await this.axios.post<Res>(
+      `/works/${id}/unvote`,
+      {},
+      {
+        headers: { Authorization: this.token },
+      }
+    )
+
+    return res.data
+  }
+
+  /**
    * ログインしているユーザーが投票している作品を配列で返します。
    */
   async votedWorks(): Promise<Res<{ votedWorks: Work[] }>> {
