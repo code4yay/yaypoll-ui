@@ -85,4 +85,17 @@ export class ApiClient {
 
     return res.data
   }
+
+  /**
+   * ログインしているユーザーが投票している作品を配列で返します。
+   */
+  async votedWorks(): Promise<Res<{ votedWorks: Work[] }>> {
+    const res = await this.axios.get('/users/votedWorks', {
+      headers: {
+        Authorization: this.token,
+      },
+    })
+
+    return res.data
+  }
 }
