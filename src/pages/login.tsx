@@ -80,6 +80,12 @@ export const LoginPage: NextPage = () => {
             <Typography variant="h5" component="h2">
               ログイン
             </Typography>
+            {router.query.next && (
+              <Alert severity="info">
+                ログイン後、 <Chip label={router.query.next} color="primary" />{' '}
+                へ遷移します。
+              </Alert>
+            )}
           </CardContent>
           <Divider />
           <Collapse in={page === 0}>
