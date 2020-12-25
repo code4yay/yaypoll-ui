@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import { NextPage } from 'next'
+import Head from 'next/head'
 import { useSnackbar } from 'notistack'
 import { useEffect, useState } from 'react'
 import { useApi } from '../hooks/useApi'
@@ -88,55 +89,60 @@ export const HomePage: NextPage = () => {
   }
 
   return (
-    <MainLayout>
-      <Typography variant="h3" component="h1">
-        ファイナリストの作品
-      </Typography>
-      <Typography variant="h4" component="div">
-        投票できる数: {3 - votedWorks.length}
-      </Typography>
-      <Grid container spacing={2} justify="center">
-        {works.map((w) => {
-          return (
-            <Grid key={w.id} item xs={12} md={3} lg={4}>
-              <Card>
-                <CardHeader
-                  title={
-                    <Typography variant="h5" component="h6">
-                      {w.title}
-                    </Typography>
-                  }
-                />
-                <Divider />
-                <CardActions>
-                  {isVotedWork(w) ? (
-                    <Button
-                      variant="text"
-                      color="secondary"
-                      fullWidth
-                      disabled={loading}
-                      onClick={() => unvote(w)}
-                    >
-                      投票をキャンセル
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="text"
-                      color="primary"
-                      fullWidth
-                      disabled={loading}
-                      onClick={() => vote(w)}
-                    >
-                      この作品に投票する
-                    </Button>
-                  )}
-                </CardActions>
-              </Card>
-            </Grid>
-          )
-        })}
-      </Grid>
-    </MainLayout>
+    <>
+      <Head>
+        <title>投票 - DojoCon Japan 2020</title>
+      </Head>
+      <MainLayout>
+        <Typography variant="h3" component="h1">
+          ファイナリストの作品
+        </Typography>
+        <Typography variant="h4" component="div">
+          投票できる数: {3 - votedWorks.length}
+        </Typography>
+        <Grid container spacing={2} justify="center">
+          {works.map((w) => {
+            return (
+              <Grid key={w.id} item xs={12} md={3} lg={4}>
+                <Card>
+                  <CardHeader
+                    title={
+                      <Typography variant="h5" component="h6">
+                        {w.title}
+                      </Typography>
+                    }
+                  />
+                  <Divider />
+                  <CardActions>
+                    {isVotedWork(w) ? (
+                      <Button
+                        variant="text"
+                        color="secondary"
+                        fullWidth
+                        disabled={loading}
+                        onClick={() => unvote(w)}
+                      >
+                        投票をキャンセル
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="text"
+                        color="primary"
+                        fullWidth
+                        disabled={loading}
+                        onClick={() => vote(w)}
+                      >
+                        この作品に投票する
+                      </Button>
+                    )}
+                  </CardActions>
+                </Card>
+              </Grid>
+            )
+          })}
+        </Grid>
+      </MainLayout>
+    </>
   )
 }
 
