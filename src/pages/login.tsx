@@ -1,4 +1,5 @@
 import { NextPage } from 'next'
+import Head from 'next/head'
 import {
   Button,
   Card,
@@ -73,6 +74,9 @@ export const LoginPage: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>ログイン - DojoCon Japan 2020</title>
+      </Head>
       <Container component="main" maxWidth="xs">
         <Card className={classes.card}>
           {loading && <LinearProgress />}
