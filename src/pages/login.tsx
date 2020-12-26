@@ -14,7 +14,11 @@ import {
   LinearProgress,
   Chip,
 } from '@material-ui/core'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import {
+  GoogleReCaptchaProvider,
+  GoogleReCaptcha,
+} from 'react-google-recaptcha-v3'
 import { useApi } from '../hooks/useApi'
 import { useRouter } from 'next/dist/client/router'
 import { Alert } from '@material-ui/lab'
@@ -36,11 +40,18 @@ export const LoginPage: NextPage = () => {
   const [page, setPage] = useState(0)
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
+  const [recaptchaToken, setRecaptchaToken] = useState('')
   const [error, setError] = useState('')
   const [token, setToken] = useState('')
 
   const api = useApi()
   const router = useRouter()
+
+  useEffect(() => {
+    if (!recaptchaToken) {
+      setLoading(true)
+    }
+  }, [])
 
   const onNextClicked = async () => {
     setError('')
@@ -58,7 +69,7 @@ export const LoginPage: NextPage = () => {
   const onLoginClicked = async () => {
     setError('')
     setLoading(true)
-    const result = await api.login(email, token)
+    const result = await api.login(email, token, recaptchaToken)
     setLoading(false)
 
     if (result.errors.length === 0) {
@@ -72,11 +83,19 @@ export const LoginPage: NextPage = () => {
     }
   }
 
+  const onVerify = (token) => {
+    setRecaptchaToken(token)
+    setLoading(false)
+  }
+
   return (
     <>
       <Head>
         <title>ログイン - DojoCon Japan 2020</title>
       </Head>
+      <GoogleReCaptchaProvider reCaptchaKey="6LehJxUaAAAAAOCV93OvdqEMP4oTqDaPnn5YtzBV">
+        <GoogleReCaptcha onVerify={onVerify} />
+      </GoogleReCaptchaProvider>
       <Container component="main" maxWidth="xs">
         <Card className={classes.card}>
           {loading && <LinearProgress />}
@@ -122,7 +141,7 @@ export const LoginPage: NextPage = () => {
             <CardContent>
               <Alert severity="info">
                 <Chip label={email} color="primary" />{' '}
-                宛にログインに必要なトークンを送信いたしました。
+                宛にログインに必要な6桁のトークンを送信いたしました。メールが表示されない場合は迷惑メール等をチェックしてみてくだい。
               </Alert>
               <div className={classes.alertSpacing}></div>
               <TextField

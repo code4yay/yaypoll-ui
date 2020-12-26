@@ -41,11 +41,17 @@ export class ApiClient {
    *
    * @param email メールアドレス
    * @param token トークン
+   * @param recaptchaToken reCaptchaのトークン
    */
-  async login(email: string, token: string): Promise<Res<{ jwt: string }>> {
+  async login(
+    email: string,
+    token: string,
+    recaptchaToken: string
+  ): Promise<Res<{ jwt: string }>> {
     const res = await this.axios.post<Res<{ jwt: string }>>('/users/login', {
       email,
       token,
+      recaptchaToken,
     })
 
     if (res.data.errors.length === 0) {
