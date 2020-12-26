@@ -21,10 +21,10 @@ import { Alert } from '@material-ui/lab'
  * HomePage component.
  */
 export const HomePage: NextPage = () => {
-  // const frag = useAuth()
-  // if (frag) {
-  //   return frag
-  // }
+  const frag = useAuth()
+  if (frag) {
+    return frag
+  }
 
   const api = useApi()
   const { enqueueSnackbar } = useSnackbar()
