@@ -30,11 +30,12 @@ export class ApiClient {
    * @param recaptchaToken reCaptchaのトークン
    */
   async requestLogInToken(email: string, recaptchaToken: string): Promise<Res> {
+    const params = new URLSearchParams()
+    params.append('email', email)
+    params.append('recaptchaToken', recaptchaToken)
+
     const res = await this.axios.get<Res>('/users/requestLogInToken', {
-      params: {
-        email,
-        recaptchaToken,
-      },
+      params,
     })
 
     return res.data
