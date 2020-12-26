@@ -112,6 +112,9 @@ export const LoginPage: NextPage = () => {
           </CardContent>
           <Divider />
           <Collapse in={page === 0}>
+            <Alert severity="info">
+              推奨ブラウザはChromeとFirefoxです。古いバージョンのブラウザを使用している場合、正しく動作しない可能性があります。
+            </Alert>
             <CardContent>
               <TextField
                 error={!!error}
