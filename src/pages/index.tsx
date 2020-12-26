@@ -31,8 +31,8 @@ export const HomePage: NextPage = () => {
   const [works, setWorks] = useState<Work[]>([])
   const [votedWorks, setVotedWorks] = useState<Work[]>([])
   const [loading, setLoading] = useState(false)
-  const [startTime] = useState(new Date('2020/12/26 19:10:00').getTime())
-  const [endTime] = useState(new Date('2020/12/26 19:30:00').getTime())
+  const [startTime] = useState(new Date('2020/12/27 12:00:00').getTime())
+  const [endTime] = useState(new Date('2020/12/27 16:00:00').getTime())
   const [time, setTime] = useState(Date.now())
   const [timeMessage, setTimeMessage] = useState<'wait_for_start' | 'vote_end'>(
     'wait_for_start'
