@@ -56,7 +56,7 @@ export const LoginPage: NextPage = () => {
   const onNextClicked = async () => {
     setError('')
     setLoading(true)
-    const result = await api.requestLogInToken(email)
+    const result = await api.requestLogInToken(email, recaptchaToken)
     setLoading(false)
 
     if (result.errors.length === 0) {
@@ -69,7 +69,7 @@ export const LoginPage: NextPage = () => {
   const onLoginClicked = async () => {
     setError('')
     setLoading(true)
-    const result = await api.login(email, token, recaptchaToken)
+    const result = await api.login(email, token)
     setLoading(false)
 
     if (result.errors.length === 0) {

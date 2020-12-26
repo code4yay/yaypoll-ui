@@ -27,11 +27,15 @@ export class ApiClient {
    * `email` にトークンを送るAPIを叩きます
    *
    * @param email メールアドレス
+   * @param recaptchaToken reCaptchaのトークン
    */
-  async requestLogInToken(email: string): Promise<Res> {
-    const res = await this.axios.get<Res>(
-      '/users/requestLogInToken?email=' + email
-    )
+  async requestLogInToken(email: string, recaptchaToken: string): Promise<Res> {
+    const res = await this.axios.get<Res>('/users/requestLogInToken', {
+      params: {
+        email,
+        recaptchaToken,
+      },
+    })
 
     return res.data
   }
@@ -41,17 +45,11 @@ export class ApiClient {
    *
    * @param email メールアドレス
    * @param token トークン
-   * @param recaptchaToken reCaptchaのトークン
    */
-  async login(
-    email: string,
-    token: string,
-    recaptchaToken: string
-  ): Promise<Res<{ jwt: string }>> {
+  async login(email: string, token: string): Promise<Res<{ jwt: string }>> {
     const res = await this.axios.post<Res<{ jwt: string }>>('/users/login', {
       email,
       token,
-      recaptchaToken,
     })
 
     if (res.data.errors.length === 0) {
