@@ -11,7 +11,9 @@ import { MainLayout } from '../layouts/MainLayout'
  * ScorePage component.
  */
 export const ScorePage: NextPage = () => {
-  const frag = useAuth('/realtime')
+  const frag = useAuth(
+    '/SLXfRo58xea0xQI7o4kQFWKUc8zSn2xgM9JYZ4DkAOIwh1uWaKDHqtiNdflxbkVko4jOj7kIJLRf2EQhAieWH7cgJhOuCVHppb7cQ9jlyLFRFNa8lnQv1SbRlb2in86E'
+  )
   if (frag) {
     return frag
   }
@@ -22,7 +24,7 @@ export const ScorePage: NextPage = () => {
   const [updateRate, setUpdateRate] = useState(1000)
   const [mosaicVotes, setMosaicVotes] = useState(true)
   const [displayTitle, setDisplayTitle] = useState(false)
-  const [show, setShow] = useState(true)
+  const [show, setShow] = useState(false)
   const api = useApi()
 
   const toggleDisplayTitle = () => setDisplayTitle(!displayTitle)
