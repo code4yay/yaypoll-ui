@@ -66,55 +66,60 @@ export const ScorePage: NextPage = () => {
       </Head>
       <MainLayout>
         {show ? (
-          <Bar
-            options={{
-              title: {
-                text: `DojoCon Japan 2020 プログラミングコンテスト ニンジャ部門`,
-                display: true,
-              },
-              scales: {
-                yAxes: [
-                  {
-                    ticks: {
-                      beginAtZero: true,
-                      min: 0,
+          <>
+            <Bar
+              options={{
+                title: {
+                  text: `DojoCon Japan 2020 プログラミングコンテスト ニンジャ部門`,
+                  display: true,
+                },
+                scales: {
+                  yAxes: [
+                    {
+                      ticks: {
+                        beginAtZero: true,
+                        min: 0,
+                      },
                     },
+                  ],
+                },
+              }}
+              data={{
+                labels: displayTitle
+                  ? mosaicVotes
+                    ? labels
+                    : labels.map((l, i) => l + `(${data[i]}票)`)
+                  : labels.map(() => ''),
+                datasets: [
+                  {
+                    label: '投票状況',
+                    data: mosaicVotes ? data.map((d) => d / maxVotes) : data,
+                    backgroundColor: displayTitle
+                      ? [
+                          'rgba(255, 99, 132, 0.2)',
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(255, 206, 86, 0.2)',
+                          'rgba(75, 192, 192, 0.2)',
+                          'rgba(153, 102, 255, 0.2)',
+                          'rgba(255, 159, 64, 0.2)',
+                        ]
+                      : [
+                          'rgba(75, 192, 192, 0.2)',
+                          'rgba(75, 192, 192, 0.2)',
+                          'rgba(75, 192, 192, 0.2)',
+                          'rgba(75, 192, 192, 0.2)',
+                          'rgba(75, 192, 192, 0.2)',
+                          'rgba(75, 192, 192, 0.2)',
+                        ],
+                    borderWidth: 1,
                   },
                 ],
-              },
-            }}
-            data={{
-              labels: displayTitle
-                ? mosaicVotes
-                  ? labels
-                  : labels.map((l, i) => l + `(${data[i]}票)`)
-                : labels.map(() => ''),
-              datasets: [
-                {
-                  label: '投票状況',
-                  data: mosaicVotes ? data.map((d) => d / maxVotes) : data,
-                  backgroundColor: displayTitle
-                    ? [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                      ]
-                    : [
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                      ],
-                  borderWidth: 1,
-                },
-              ],
-            }}
-          />
+              }}
+            />
+
+            <div>全体の票数{data.reduce((v, d) => v + d, 0)}</div>
+            <div>投票人数{data.reduce((v, d) => v + d, 0) / 3}</div>
+          </>
         ) : (
           <div></div>
         )}
