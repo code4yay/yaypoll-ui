@@ -32,7 +32,7 @@ export const HomePage: NextPage = () => {
   const [votedWorks, setVotedWorks] = useState<Work[]>([])
   const [loading, setLoading] = useState(false)
   const [startTime] = useState(new Date('2020/12/27 12:00:00').getTime())
-  const [endTime] = useState(new Date('2020/12/27 16:00:00').getTime())
+  const [endTime] = useState(new Date('2020/12/27 16:30:00').getTime())
   const [time, setTime] = useState(Date.now())
   const [timeMessage, setTimeMessage] = useState<'wait_for_start' | 'vote_end'>(
     'wait_for_start'
@@ -136,6 +136,9 @@ export const HomePage: NextPage = () => {
             <Typography variant="h4" component="div">
               投票できる数: {3 - votedWorks.length}
             </Typography>
+            <Alert severity="info">
+              投票締め切りを16:00から16:30までに延期しました！1人3票まで投票できるのでどんどん投票してください！
+            </Alert>
             <p>
               <ul>
                 <li>
