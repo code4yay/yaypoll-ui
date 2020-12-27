@@ -77,11 +77,11 @@ export const ScorePage: NextPage = () => {
                   {
                     ticks: {
                       beginAtZero: true,
-                      min: 0
-                    }
-                  }
-                ]
-              }
+                      min: 0,
+                    },
+                  },
+                ],
+              },
             }}
             data={{
               labels: displayTitle
