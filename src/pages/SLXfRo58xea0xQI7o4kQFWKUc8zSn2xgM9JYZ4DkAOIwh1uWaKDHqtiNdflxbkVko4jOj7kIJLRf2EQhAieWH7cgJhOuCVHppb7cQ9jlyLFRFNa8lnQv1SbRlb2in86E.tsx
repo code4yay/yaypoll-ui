@@ -72,6 +72,16 @@ export const ScorePage: NextPage = () => {
                 text: `DojoCon Japan 2020 プログラミングコンテスト ニンジャ部門`,
                 display: true,
               },
+              scales: {
+                yAxes: [
+                  {
+                    ticks: {
+                      beginAtZero: true,
+                      min: 0
+                    }
+                  }
+                ]
+              }
             }}
             data={{
               labels: displayTitle
